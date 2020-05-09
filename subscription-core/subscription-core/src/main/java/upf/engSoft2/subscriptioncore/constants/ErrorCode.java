@@ -1,8 +1,9 @@
-package br.upf.engSoft2.subscriptioncore.constants;
+package upf.engSoft2.subscriptioncore.constants;
 
 public enum ErrorCode {
 
-	NOT_FOUND("404","NOT FOUND");
+	NOT_FOUND("404","NOT FOUND"),
+	UNEXPECTED_ERROR("500", "UNEXPECTED_ERROR");
 
 	private final String code;
 	private final String message;

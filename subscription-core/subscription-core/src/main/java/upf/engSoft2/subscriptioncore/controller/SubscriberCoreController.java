@@ -1,6 +1,8 @@
-package br.upf.engSoft2.subscriptioncore.controller;
+package upf.engSoft2.subscriptioncore.controller;
 
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,9 +15,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.upf.engSoft2.subscriptioncore.entity.SubscriberEntity;
-import br.upf.engSoft2.subscriptioncore.exception.SubscriberNotFoundException;
-import br.upf.engSoft2.subscriptioncore.service.SubscriberCoreService;
+import upf.engSoft2.subscriptioncore.dto.SubscriberDTO;
+import upf.engSoft2.subscriptioncore.dto.SucessResponseDTO;
+import upf.engSoft2.subscriptioncore.entity.SubscriberEntity;
+import upf.engSoft2.subscriptioncore.exception.SubscriberNotFoundException;
+import upf.engSoft2.subscriptioncore.service.SubscriberCoreService;
 
 @RestController
 public class SubscriberCoreController {
@@ -34,35 +38,34 @@ public class SubscriberCoreController {
 	@GetMapping("/{id}")
 	public ResponseEntity<SubscriberEntity> getSubscriberById(@PathVariable("id") Long id) throws SubscriberNotFoundException {
 		
-		
 		SubscriberEntity subscriber = service.getSubscriber(id);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(subscriber);
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> createSubscribers(@RequestBody SubscriberEntity subscriber) {
+	public ResponseEntity<SucessResponseDTO> createSubscribers(@RequestBody @Valid SubscriberDTO subscriber) {
 		
-		service.saveSubscriber(subscriber);
+		SucessResponseDTO response = service.saveSubscriber(subscriber);
 		
-		return ResponseEntity.status(HttpStatus.OK).body("");
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
 		
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateSubscribers(@PathVariable("id") Long id, @RequestBody SubscriberEntity subscriber) throws SubscriberNotFoundException {
+	public ResponseEntity<SucessResponseDTO> updateSubscribers(@PathVariable("id") Long id, @RequestBody @Valid SubscriberDTO subscriber) throws SubscriberNotFoundException {
 		
-		service.updateSubscriber(id, subscriber);
+		SucessResponseDTO response = service.updateSubscriber(id, subscriber);
 		
-		return ResponseEntity.status(HttpStatus.OK).body("");
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteSubscribers(@PathVariable("id") Long id) {
+	public ResponseEntity<SucessResponseDTO> deleteSubscribers(@PathVariable("id") Long id) throws SubscriberNotFoundException {
 		
-		service.deleteSubscriber(id);
+		SucessResponseDTO deleteSubscriber = service.deleteSubscriber(id);
 		
-		return ResponseEntity.status(HttpStatus.OK).body("");
+		return ResponseEntity.status(HttpStatus.OK).body(deleteSubscriber);
 	}
 }

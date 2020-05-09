@@ -1,4 +1,4 @@
-package br.upf.engSoft2.subscriptioncore.dto;
+package upf.engSoft2.subscriptioncore.dto;
 
 import lombok.Data;
 
