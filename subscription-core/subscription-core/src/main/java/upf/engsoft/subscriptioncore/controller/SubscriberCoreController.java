@@ -1,4 +1,4 @@
-package upf.engSoft2.subscriptioncore.controller;
+package upf.engsoft.subscriptioncore.controller;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import upf.engSoft2.subscriptioncore.dto.SubscriberDTO;
-import upf.engSoft2.subscriptioncore.dto.SucessResponseDTO;
-import upf.engSoft2.subscriptioncore.entity.SubscriberEntity;
-import upf.engSoft2.subscriptioncore.exception.SubscriberNotFoundException;
-import upf.engSoft2.subscriptioncore.service.SubscriberCoreService;
+import upf.engsoft.subscriptioncore.dto.SubscriberDTO;
+import upf.engsoft.subscriptioncore.dto.SucessResponseDTO;
+import upf.engsoft.subscriptioncore.entity.SubscriberEntity;
+import upf.engsoft.subscriptioncore.exception.SubscriberNotFoundException;
+import upf.engsoft.subscriptioncore.service.SubscriberCoreService;
 
 @RestController
 public class SubscriberCoreController {

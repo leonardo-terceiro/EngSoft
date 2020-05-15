@@ -1,4 +1,4 @@
-package upf.engSoft2.subscriptioncore.service;
+package upf.engsoft.subscriptioncore.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,14 +8,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import upf.engSoft2.subscriptioncore.dto.SubscriberDTO;
-import upf.engSoft2.subscriptioncore.dto.SucessResponseDTO;
-import upf.engSoft2.subscriptioncore.entity.SubscriberEntity;
-import upf.engSoft2.subscriptioncore.exception.SubscriberNotFoundException;
-import upf.engSoft2.subscriptioncore.exception.UnexpectedErrorException;
-import upf.engSoft2.subscriptioncore.repository.SubscriberRepository;
+import upf.engsoft.subscriptioncore.constants.ResponseCode;
+import upf.engsoft.subscriptioncore.dto.SubscriberDTO;
+import upf.engsoft.subscriptioncore.dto.SucessResponseDTO;
+import upf.engsoft.subscriptioncore.entity.SubscriberEntity;
+import upf.engsoft.subscriptioncore.exception.SubscriberNotFoundException;
+import upf.engsoft.subscriptioncore.exception.UnexpectedErrorException;
+import upf.engsoft.subscriptioncore.repository.SubscriberRepository;
 
 @Slf4j
 @Service
@@ -57,8 +57,8 @@ public class SubscriberCoreService {
 			SubscriberEntity savedSubscription = repository.saveAndFlush(subEntity);
 			
 			SucessResponseDTO response = new SucessResponseDTO();
-			response.setCode("203");
-			response.setStatus("CREATED");
+			response.setCode(ResponseCode.OK.getCode());
+			response.setStatus(ResponseCode.OK.getMessage());
 			response.setDate(LocalDateTime.now());
 			response.setMessage("Insrição realizada com sucesso! id de inscrição: [" + savedSubscription.getId() + "]");
 			log.info("\"saveSubscriber() - END - subscription id: [{}]", savedSubscription.getId());
@@ -72,11 +72,13 @@ public class SubscriberCoreService {
 	
 
 	public SucessResponseDTO updateSubscriber(Long subscriberId, SubscriberDTO subscriber) throws SubscriberNotFoundException {
-
+		log.info("updateSubscriber() - START - updating subscription with id: [{}]", subscriberId);
+		
 		try {
 			Optional<SubscriberEntity> optSubscriber = repository.findById(subscriberId);
 			
 			if(!optSubscriber.isPresent()) {
+				log.info("updateSubscriber() - END - id: [{}] not found", subscriberId);
 				throw new SubscriberNotFoundException("Nenhuma inscrição com id: [" + subscriberId + "] foi encontrada!");
 			}
 			
@@ -87,33 +89,40 @@ public class SubscriberCoreService {
 			
 			repository.save(oldSubscriber);
 			SucessResponseDTO response = new SucessResponseDTO();
-			response.setCode("200");
-			response.setStatus("OK");
+			response.setCode(ResponseCode.OK.getCode());
+			response.setStatus(ResponseCode.OK.getMessage());
 			response.setMessage("Inscição com id: [" + subscriberId + "] atualizada com sucesso!");
 			response.setDate(LocalDateTime.now());
+			
+			log.info("updateSubscriber() - END - update finished for subscription id: [{}]", subscriberId);
 			return response;
 		}catch (Exception e) {
+			log.info("updateSubscriber() - END - Unexpected error ocurring while updating subscription with id: [{}] - Error: ", subscriberId, e);
 			throw new UnexpectedErrorException("Erro ao tentar realizar atualiazação da inscrição id: [" + subscriberId + "]");
 		}
 	}
 
 	public SucessResponseDTO deleteSubscriber(Long subscriberId) throws SubscriberNotFoundException {
-		
+		log.info("deleteSubscriber() - START - deliting subscription with id: [{}]", subscriberId);
 		try {
 			boolean existsById = repository.existsById(subscriberId);
 			
 			if(existsById) {
 				repository.deleteById(subscriberId);
 				SucessResponseDTO response = new SucessResponseDTO();
-				response.setCode("200");
-				response.setStatus("OK");
+				response.setCode(ResponseCode.OK.getCode());
+				response.setStatus(ResponseCode.OK.getMessage());
 				response.setMessage("Inscrição excluida ocm sucesso!");
 				response.setDate(LocalDateTime.now());
+				
+				log.info("deleteSubscriber() - END - sucessuful deleting subscription with id: [{}]", subscriberId);
 				return response;
 			}else {
+				log.info("deleteSubscriber() - END - subscription with id: [{}] not founded our already deleted", subscriberId);
 				throw new SubscriberNotFoundException("inscrição com id: [" + subscriberId + "] não encontrada!");
 			}
 		} catch (Exception e) {
+			log.info("deleteSubscriber() - ERROR - error while trying to delete subscription with id: [{}] - Error: ", subscriberId, e);
 			throw new UnexpectedErrorException("Erro ao tentar realizar exclusão da inscrição com id: [" + subscriberId + "]");
 		}
 		

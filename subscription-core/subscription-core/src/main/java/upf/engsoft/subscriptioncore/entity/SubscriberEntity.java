@@ -1,4 +1,4 @@
-package upf.engSoft2.subscriptioncore.entity;
+package upf.engsoft.subscriptioncore.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

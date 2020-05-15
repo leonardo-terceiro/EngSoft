@@ -1,4 +1,4 @@
-package upf.engSoft2.subscriptioncore.exception;
+package upf.engsoft.subscriptioncore.exception;
 
 public class SubscriberNotFoundException extends Exception {
 

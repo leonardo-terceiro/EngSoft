@@ -1,14 +1,15 @@
-package upf.engSoft2.subscriptioncore.constants;
+package upf.engsoft.subscriptioncore.constants;
 
-public enum ErrorCode {
+public enum ResponseCode {
 
+	OK("200", "OK"),
 	NOT_FOUND("404","NOT FOUND"),
 	UNEXPECTED_ERROR("500", "UNEXPECTED_ERROR");
 
 	private final String code;
 	private final String message;
 	
-	private ErrorCode (String code, String message) {
+	private ResponseCode (String code, String message) {
 		this.code = code;
 		this.message = code;
 	}

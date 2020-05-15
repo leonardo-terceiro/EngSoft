@@ -1,4 +1,4 @@
-package upf.engSoft2.subscriptioncore.dto;
+package upf.engsoft.subscriptioncore.dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
