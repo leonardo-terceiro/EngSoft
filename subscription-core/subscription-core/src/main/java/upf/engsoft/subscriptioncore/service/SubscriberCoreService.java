@@ -61,9 +61,11 @@ public class SubscriberCoreService {
 			response.setStatus(ResponseCode.OK.getMessage());
 			response.setDate(LocalDateTime.now());
 			response.setMessage("Insrição realizada com sucesso! id de inscrição: [" + savedSubscription.getId() + "]");
+			
 			log.info("\"saveSubscriber() - END - subscription id: [{}]", savedSubscription.getId());
 			return response;
 		} catch (Exception e) {
+			
 			log.error("saveSubscriber() - ERROR ", e);
 			throw new UnexpectedErrorException("Erro ao tentar realizar inscrição para usuario com CPF: [" + subscriber.getCpf() + "]");
 		}

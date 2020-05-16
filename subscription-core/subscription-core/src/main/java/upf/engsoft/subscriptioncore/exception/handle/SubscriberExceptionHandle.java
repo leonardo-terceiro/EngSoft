@@ -23,7 +23,7 @@ public class SubscriberExceptionHandle {
 	}
 	
 	@ExceptionHandler(UnexpectedErrorException.class)
-	public ResponseEntity<ErrorMessageDTO> UnexpectedErrorExceptionHandle(UnexpectedErrorException e) {
+	public ResponseEntity<ErrorMessageDTO> unexpectedErrorExceptionHandle(UnexpectedErrorException e) {
 		ErrorMessageDTO errorMessage = new ErrorMessageDTO();
 		errorMessage.setCode(ResponseCode.UNEXPECTED_ERROR.getCode());
 		errorMessage.setMessage(ResponseCode.UNEXPECTED_ERROR.getMessage());
