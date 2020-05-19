@@ -43,7 +43,7 @@ public class SubscriberCoreService {
 			return subscriber.get();
 		}else {
 			log.warn("getSubscriber() - END - no subscripition founded with id: [{}]", id);
-			throw new SubscriberNotFoundException("inscrição de id: [" + id + "] não encontrada") ;
+			throw new SubscriberNotFoundException("Inscrição com id: [" + id + "] não encontrada") ;
 		}
 		
 	}
@@ -62,7 +62,7 @@ public class SubscriberCoreService {
 			response.setDate(LocalDateTime.now());
 			response.setMessage("Insrição realizada com sucesso! id de inscrição: [" + savedSubscription.getId() + "]");
 			
-			log.info("\"saveSubscriber() - END - subscription id: [{}]", savedSubscription.getId());
+			log.info("saveSubscriber() - END - subscription id: [{}]", savedSubscription.getId());
 			return response;
 		} catch (Exception e) {
 			
@@ -76,14 +76,14 @@ public class SubscriberCoreService {
 	public SucessResponseDTO updateSubscriber(Long subscriberId, SubscriberDTO subscriber) throws SubscriberNotFoundException {
 		log.info("updateSubscriber() - START - updating subscription with id: [{}]", subscriberId);
 		
+		Optional<SubscriberEntity> optSubscriber = repository.findById(subscriberId);
+		
+		if(!optSubscriber.isPresent()) {
+			log.info("updateSubscriber() - END - id: [{}] not found", subscriberId);
+			throw new SubscriberNotFoundException("Nenhuma inscrição com id: [" + subscriberId + "] foi encontrada!");
+		}
+		
 		try {
-			Optional<SubscriberEntity> optSubscriber = repository.findById(subscriberId);
-			
-			if(!optSubscriber.isPresent()) {
-				log.info("updateSubscriber() - END - id: [{}] not found", subscriberId);
-				throw new SubscriberNotFoundException("Nenhuma inscrição com id: [" + subscriberId + "] foi encontrada!");
-			}
-			
 			SubscriberEntity subEnt = buildSubscriberEntity(subscriber);
 			SubscriberEntity oldSubscriber = optSubscriber.get();
 			
@@ -106,29 +106,28 @@ public class SubscriberCoreService {
 
 	public SucessResponseDTO deleteSubscriber(Long subscriberId) throws SubscriberNotFoundException {
 		log.info("deleteSubscriber() - START - deliting subscription with id: [{}]", subscriberId);
-		try {
-			boolean existsById = repository.existsById(subscriberId);
-			
-			if(existsById) {
+		
+		boolean existsById = repository.existsById(subscriberId);
+
+		if (existsById) {
+			try {
 				repository.deleteById(subscriberId);
-				SucessResponseDTO response = new SucessResponseDTO();
-				response.setCode(ResponseCode.OK.getCode());
-				response.setStatus(ResponseCode.OK.getMessage());
-				response.setMessage("Inscrição excluida ocm sucesso!");
-				response.setDate(LocalDateTime.now());
-				
-				log.info("deleteSubscriber() - END - sucessuful deleting subscription with id: [{}]", subscriberId);
-				return response;
-			}else {
-				log.info("deleteSubscriber() - END - subscription with id: [{}] not founded our already deleted", subscriberId);
-				throw new SubscriberNotFoundException("inscrição com id: [" + subscriberId + "] não encontrada!");
+			} catch (Exception e) {
+				log.info("deleteSubscriber() - ERROR - error while trying to delete subscription with id: [{}] - Error: ",subscriberId, e);
+				throw new UnexpectedErrorException("Erro ao tentar realizar exclusão da inscrição com id: [" + subscriberId + "]");
 			}
-		} catch (Exception e) {
-			log.info("deleteSubscriber() - ERROR - error while trying to delete subscription with id: [{}] - Error: ", subscriberId, e);
-			throw new UnexpectedErrorException("Erro ao tentar realizar exclusão da inscrição com id: [" + subscriberId + "]");
+			SucessResponseDTO response = new SucessResponseDTO();
+			response.setCode(ResponseCode.OK.getCode());
+			response.setStatus(ResponseCode.OK.getMessage());
+			response.setMessage("Inscrição excluida com sucesso!");
+			response.setDate(LocalDateTime.now());
+
+			log.info("deleteSubscriber() - END - sucessuful deleting subscription with id: [{}]", subscriberId);
+			return response;
+		} else {
+			log.info("deleteSubscriber() - END - subscription with id: [{}] not founded our already deleted",subscriberId);
+			throw new SubscriberNotFoundException("Inscrição com id: [" + subscriberId + "] não encontrada!");
 		}
-		
-		
 		
 	}
 	

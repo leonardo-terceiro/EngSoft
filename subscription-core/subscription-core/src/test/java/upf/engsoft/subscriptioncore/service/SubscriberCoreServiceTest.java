@@ -2,6 +2,8 @@ package upf.engsoft.subscriptioncore.service;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,6 +44,10 @@ public class SubscriberCoreServiceTest {
 	
 	@Test
 	public void getSubscriber() throws SubscriberNotFoundException {
+		
+		Optional<SubscriberEntity> buildOptSubscription = buildOptSubscription();
+		
+		when(repository.findById(1L)).thenReturn(buildOptSubscription);
 		
 		service.getSubscriber(1L);
 		
@@ -94,8 +100,66 @@ public class SubscriberCoreServiceTest {
 		Optional<SubscriberEntity> optSubscription = buildOptSubscription();
 		when(repository.findById(1L)).thenReturn(optSubscription );
 		
-		service.updateSubscriber(1L, subscriber);
+		SucessResponseDTO updateSubscriber = service.updateSubscriber(1L, subscriber);
 		
+		assertNotNull(updateSubscriber);
+		assertEquals("OK", updateSubscriber.getStatus());
+		assertEquals("200", updateSubscriber.getCode());
+		verify(repository, times(1)).findById(1L);
+		verify(repository, times(1)).save(any());
+	}
+	
+	@Test(expected = SubscriberNotFoundException.class)
+	public void updateSubscriberWithNoExistendSubscriptionId() throws SubscriberNotFoundException {
+		SubscriberDTO subscriber = buildSubscription();
+		
+		when(repository.findById(1L)).thenReturn(Optional.empty());
+		
+		service.updateSubscriber(1L, subscriber);
+	}
+	
+	@Test(expected = UnexpectedErrorException.class)
+	public void updateSubscriberWithUnexpectedError() throws SubscriberNotFoundException {
+		
+		SubscriberDTO subscriber = buildSubscription();
+		Optional<SubscriberEntity> optSubscription = buildOptSubscription();
+		
+		when(repository.findById(1L)).thenReturn(optSubscription );
+		when(repository.save(any())).thenThrow(new RuntimeException());
+		
+		service.updateSubscriber(1L, subscriber);
+	}
+	
+	@Test
+	public void deleteSubscriber() throws SubscriberNotFoundException {
+		
+		when(repository.existsById(1L)).thenReturn(true);
+		
+		SucessResponseDTO deleteSubscriber = service.deleteSubscriber(1L);
+		
+		assertNotNull(deleteSubscriber);
+		assertEquals("200", deleteSubscriber.getCode());
+		assertEquals("OK", deleteSubscriber.getStatus());
+		verify(repository, times(1)).existsById(1L);
+		verify(repository, times(1)).deleteById(1L);
+	}
+	
+	@Test(expected = SubscriberNotFoundException.class)
+	public void deleteSubscriberWithNoExistentId() throws SubscriberNotFoundException {
+		
+		when(repository.existsById(1L)).thenReturn(false);
+		
+		service.deleteSubscriber(1L);
+		
+	}
+	
+	@Test(expected = UnexpectedErrorException.class)
+	public void deleteSubscriberWithUnexpectedError() throws SubscriberNotFoundException {
+		
+		when(repository.existsById(1L)).thenReturn(true);
+		doThrow(new RuntimeException()).when(repository).deleteById(1L);
+		
+		service.deleteSubscriber(1L);
 		
 	}
 	
