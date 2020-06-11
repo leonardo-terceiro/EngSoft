@@ -1,4 +1,4 @@
-package upf.engsoft.subscriptioncore.entity;
+package upf.engsoft.notificationmail.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

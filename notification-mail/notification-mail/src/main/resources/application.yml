@@ -1,0 +1,20 @@
+data:
+  timezone: ${TIME_ZONE:America/Recife}
+  
+server:
+  port: ${SERVER_PORT:3030}
+  max-http-header-size: 1000000
+    
+logging:
+  file: logs/spring-boot-logging.log
+  level:
+    org.springframework: ${SPRING_LOG_LEVEL:INFO}
+    esfera.integration: ${LOG_LEVEL:DEBUG}  
+    org.hibernate: ${HIBERNATE_LOG_LEVEL:DEBUG}
+    
+spring:
+  datasource:
+    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://${MYSQL_HOST:localhost}:${MYSQL_PORT:3307}/subscriber
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASS:root}

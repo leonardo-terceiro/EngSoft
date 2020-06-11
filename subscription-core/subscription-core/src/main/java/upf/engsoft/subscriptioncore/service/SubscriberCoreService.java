@@ -138,7 +138,7 @@ public class SubscriberCoreService {
 		subEntity.setEmail(subscriber.getEmail());
 		subEntity.setCpf(subscriber.getCpf());
 		subEntity.setCellphone(subscriber.getCellphone());
-		
+		subEntity.setStatus("INITIAL");
 		return subEntity;
 	}
 }
