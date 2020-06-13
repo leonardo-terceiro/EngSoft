@@ -139,6 +139,6 @@ public class SubscriberCoreService {
 		subEntity.setCpf(subscriber.getCpf());
 		subEntity.setCellphone(subscriber.getCellphone());
 		subEntity.setStatus("INITIAL");
-		return subEntity;
+		return subEntity; 
 	}
 }

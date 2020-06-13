@@ -1,6 +1,6 @@
 data:
   timezone: ${TIME_ZONE:America/Recife}
-  
+
 server:
   port: ${SERVER_PORT:3030}
   max-http-header-size: 1000000
@@ -18,3 +18,15 @@ spring:
     url: jdbc:mariadb://${MYSQL_HOST:localhost}:${MYSQL_PORT:3307}/subscriber
     username: ${MYSQL_USER:root}
     password: ${MYSQL_PASS:root}
+  mail:    host: smtp.gmail.com
+    port: 587
+    username: leonardo.terceiro.teste@gmail.com
+    password: #teste1234
+    properties:      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          starttls:
+            enable: true
