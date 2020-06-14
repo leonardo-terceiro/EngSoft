@@ -1,6 +1,7 @@
 data:
   timezone: ${TIME_ZONE:America/Recife}
   cron: ${0 0 7 * * *}
+  mailto: 163510@upf.br
 
 server:
   port: ${SERVER_PORT:3030}

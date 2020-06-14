@@ -5,11 +5,8 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +24,7 @@ public class NotificationMailService {
 	private WriterService writerService;
 	
 	@Autowired
-    private JavaMailSender javaMailSender;
+    private MailSender mailSender;
 	
 	/**
 	 * 
@@ -91,34 +88,22 @@ public class NotificationMailService {
 		
 		writerService.csvWriter(file, loadSubscriptions);
 		
-		log.info("generateFile() - END - file [] generated", file.getName());
+		log.info("generateFile() - END - file [{}] generated", file.getName());
 		return file;
 		
 	}
 
 	/**
 	 * 
-	 * With the given file send the report with the file as attachment
+	 * Calls the service to send the email
 	 * 
 	 * @param file
 	 * @throws MessagingException
 	 */
-	public void sendEmail(File file) throws MessagingException {
+	private void sendEmail(File file) throws MessagingException {
 		log.info("sendEmail() - START - sending e-mail with file [{}]", file.getName());
 		
-		MimeMessage msg = javaMailSender.createMimeMessage();
-		
-		MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-		
-		helper.setTo("163510@upf.br");
-		
-		helper.setText("teste");
-		
-		helper.setSubject("Teste");
-		
-		helper.addAttachment("NewSubscriptions.csv", file);
-		
-		javaMailSender.send(msg);
+		mailSender.sendEmailWithAttachment(file);
 		
 		log.info("sendEmail() - END file [{}] sended", file.getName());
 		
