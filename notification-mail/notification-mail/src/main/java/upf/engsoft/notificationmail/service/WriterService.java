@@ -11,12 +11,23 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import upf.engsoft.notificationmail.entity.SubscriberEntity;
 
+@Slf4j
 @Service
 public class WriterService {
 
+	/**
+	 * 
+	 * write the CSV file
+	 * 
+	 * @param file
+	 * @param subscriptions
+	 * @throws IOException
+	 */
 	public void csvWriter(File file, List<SubscriberEntity> subscriptions) throws IOException {
+		log.info("csvWriter() - START - writing CSV file with [{}] subscriptions", subscriptions.size());
 		
 		PrintWriter writer = new PrintWriter(file);
 		
@@ -29,8 +40,10 @@ public class WriterService {
 				"telefone"
 				).withDelimiter(','));
 		
+		int cont = 1;
 		for (SubscriberEntity subEnt : subscriptions) {
-		
+			log.info("csvWriter() - [LINE_{}] - writing line with [{}]", cont, subEnt);
+			
 			List<Object> csvLine = Arrays.asList(
 					ObjectUtils.defaultIfNull(subEnt.getId(), null),
 					ObjectUtils.defaultIfNull(subEnt.getName(), null),
@@ -42,11 +55,15 @@ public class WriterService {
 			
 			csvPrinter.printRecord(csvLine);
 			
+			log.info("csvWriter() - [LINE_{}] - result: [{}]", cont, csvLine);
+			cont++;
 		}
 		
 		csvPrinter.flush();
 		csvPrinter.close();
 		writer.close();
+		
+		log.info("csvWriter() - END - Finished writing [{}] lines", subscriptions.size());
 	}
 	
 }

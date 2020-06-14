@@ -1,5 +1,6 @@
 data:
   timezone: ${TIME_ZONE:America/Recife}
+  cron: ${0 0 7 * * *}
 
 server:
   port: ${SERVER_PORT:3030}
@@ -21,7 +22,7 @@ spring:
   mail:    host: smtp.gmail.com
     port: 587
     username: leonardo.terceiro.teste@gmail.com
-    password: #teste1234
+    password: '#teste1234'
     properties:      mail:
         smtp:
           auth: true
