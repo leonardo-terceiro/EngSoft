@@ -24,7 +24,7 @@ public class NotificationMailService {
 	private WriterService writerService;
 	
 	@Autowired
-    private MailSender mailSender;
+    private MailSenderService mailSender;
 	
 	/**
 	 * 

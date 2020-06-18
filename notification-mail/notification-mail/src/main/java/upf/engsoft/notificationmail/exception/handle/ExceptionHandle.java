@@ -19,7 +19,7 @@ public class ExceptionHandle {
 		response.setCode("200");
 		response.setStatus("OK");
 		response.setMessage(nde.getMessage());
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@ExceptionHandler(Exception.class)

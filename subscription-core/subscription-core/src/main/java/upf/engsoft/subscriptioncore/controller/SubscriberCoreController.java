@@ -27,7 +27,7 @@ public class SubscriberCoreController {
 	@Autowired
 	private SubscriberCoreService service;
 	
-	@GetMapping("find/all")
+	@GetMapping("/find/all")
 	public ResponseEntity<List<SubscriberEntity>> getSubscribers() {
 		
 		List<SubscriberEntity> subscribers = service.getSubscribers();
@@ -35,7 +35,7 @@ public class SubscriberCoreController {
 		return ResponseEntity.status(HttpStatus.OK).body(subscribers);
 	}
 
-	@GetMapping("find/{id}")
+	@GetMapping("/find/{id}")
 	public ResponseEntity<SubscriberEntity> getSubscriberById(@PathVariable("id") Long id) throws SubscriberNotFoundException {
 		
 		SubscriberEntity subscriber = service.getSubscriber(id);
@@ -53,7 +53,7 @@ public class SubscriberCoreController {
 		
 	}
 	
-	@PutMapping("update/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<SucessResponseDTO> updateSubscribers(@PathVariable("id") Long id, @RequestBody @Valid SubscriberDTO subscriber) throws SubscriberNotFoundException {
 		
 		SucessResponseDTO response = service.updateSubscriber(id, subscriber);
@@ -61,7 +61,7 @@ public class SubscriberCoreController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
-	@DeleteMapping("delete/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<SucessResponseDTO> deleteSubscribers(@PathVariable("id") Long id) throws SubscriberNotFoundException {
 		
 		SucessResponseDTO deleteSubscriber = service.deleteSubscriber(id);

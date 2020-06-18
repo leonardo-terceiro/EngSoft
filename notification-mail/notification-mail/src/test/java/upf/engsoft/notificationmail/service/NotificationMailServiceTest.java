@@ -22,7 +22,7 @@ import upf.engsoft.notificationmail.entity.SubscriberEntity;
 import upf.engsoft.notificationmail.exception.NoDataFoundException;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { NotificationMailService.class, SubscriptionService.class, WriterService.class, MailSender.class })
+@SpringBootTest(classes = { NotificationMailService.class, SubscriptionService.class, WriterService.class, MailSenderService.class })
 public class NotificationMailServiceTest {
 
 	@Autowired
@@ -35,7 +35,7 @@ public class NotificationMailServiceTest {
 	private WriterService writerService;
 	
 	@MockBean
-    private MailSender mailSender;
+    private MailSenderService mailSender;
 	
 	@Test
 	public void doWork() throws NoDataFoundException, IOException, MessagingException {
